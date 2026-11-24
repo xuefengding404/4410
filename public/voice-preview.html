@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>星语剧场 · 固定语音对比</title>
+<style>
+  :root { --deep:#0b1022; --gold:#dcc39a; --pink:#e7b5d5; --text:#f7f3fa; --sub:#b8b6cd; }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100dvh; padding:28px 22px 60px; color:var(--text);
+    background: radial-gradient(70% 50% at 70% 0%, rgba(231,181,213,.12), transparent 70%), var(--deep);
+    font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; }
+  h1 { margin:0 0 6px; font-family:"Noto Serif SC","Songti SC",serif; font-weight:500;
+    font-size:20px; letter-spacing:.14em; color:var(--gold); }
+  p.note { margin:0 0 22px; color:var(--sub); font-size:12px; line-height:1.8; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; max-width:1180px; margin:0 auto; }
+  .col { padding:16px; border-radius:14px; border:1px solid rgba(220,195,154,.22);
+    background:linear-gradient(160deg, rgba(36,28,61,.7), rgba(17,22,44,.8)); }
+  .col h2 { margin:0 0 4px; font-size:15px; color:var(--gold); font-weight:600; }
+  .col .meta { margin:0 0 12px; font-size:11px; color:var(--sub); }
+  .row { padding:10px 0; border-top:1px solid rgba(247,243,250,.08); }
+  .row:first-of-type { border-top:none; }
+  .text { margin:0 0 8px; font-size:12.5px; line-height:1.7; color:rgba(247,243,250,.9); }
+  .id { display:inline-block; margin-right:6px; font-size:10px; color:var(--sub); }
+  audio { width:100%; height:34px; }
+  @media (max-width:760px) { .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<h1>🌿 固定语音对比</h1>
+<p class="note">左：珂珂（当前使用）。右：参考视频音色（未采用，保留供对比）。</p>
+<div class="grid">
+  <section class="col" id="old"><h2>珂珂 · 当前</h2><p class="meta">assets/voice/ella</p><div class="list"></div></section>
+  <section class="col" id="new"><h2>参考视频音色 · 未采用</h2><p class="meta">assets/voice/ella-ref</p><div class="list"></div></section>
+</div>
+<script>
+const packs = [
+  ['#old', 'assets/voice/ella/index.json'],
+  ['#new', 'assets/voice/ella-ref/index.json'],
+];
+for (const [sel, url] of packs) {
+  fetch(url).then((r) => r.json()).then((data) => {
+    const list = document.querySelector(sel + ' .list');
+    for (const line of data.lines) {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = '<p class="text"><span class="id">' + line.id + ' · ' + line.seconds + 's</span>' + line.text + '</p>';
+      const audio = document.createElement('audio');
+      audio.controls = true;
+      audio.preload = 'none';
+      audio.src = url.replace('index.json', line.file);
+      row.append(audio);
+      list.append(row);
+    }
+  }).catch(() => {
+    document.querySelector(sel + ' .list').textContent = '读取失败：' + url;
+  });
+}
+</script>
+</body>
+</html>

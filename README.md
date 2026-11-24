@@ -24,7 +24,7 @@
 
 ## 下载与安装
 
-- Windows 安装包：在本仓库 **Releases** 页下载 `starry-theater-geek-setup-1.0.0.exe`。
+- Windows 安装包：在 [Releases](https://github.com/xuefengding404/4410/releases) 页下载 `starry-theater-geek-setup-1.0.0.exe`。
 - 这是**极客免费版**：没有订阅、没有授权码、没有付费入口；带上你自己的 API Key 就能用。
 - 只想改代码/自己构建：见下方「三分钟开始」。
 
